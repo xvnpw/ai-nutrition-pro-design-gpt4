@@ -36,7 +36,7 @@ jobs:
           input_architecture_threat_model_file: "ARCHITECTURE_SECURITY.md"
           temperature: 0.2
           verbose: true
-          model: "gpt-3.5-turbo-16k"
+          model: "gpt-4"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       - name: Commit changes

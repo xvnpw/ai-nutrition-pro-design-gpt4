@@ -25,8 +25,9 @@ jobs:
           type: 'architecture'
           input_files: '["ARCHITECTURE.md"]'
           output_file: 'ARCHITECTURE_SECURITY.md'
-          temperature: 0
+          temperature: 0.2
           verbose: true
+          model: 'gpt-4'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       - name: Commit changes
