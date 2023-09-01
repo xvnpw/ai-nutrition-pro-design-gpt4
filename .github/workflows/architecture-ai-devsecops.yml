@@ -1,0 +1,37 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ARCHITECTURE.md'
+  workflow_dispatch:
+
+jobs:
+  architecture_ai_devsecops_job:
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+
+    name: Run ai threat modeling action for architecture analysis
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Generate architecture threat model
+        uses: xvnpw/ai-threat-modeling-action@v1.2.1
+        with:
+          type: 'architecture'
+          input_files: '["ARCHITECTURE.md"]'
+          output_file: 'ARCHITECTURE_SECURITY.md'
+          temperature: 0
+          verbose: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Project architecture threat model'
+          add: 'ARCHITECTURE_SECURITY.md'
+          pull: '--rebase --autostash'
