@@ -1,0 +1,39 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ARCHITECTURE.md'
+  workflow_dispatch:
+
+jobs:
+  architecture_ai_review_job:
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+
+    name: Run ai threat modeling action for architecture review
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Generate architecture review
+        uses: xvnpw/ai-threat-modeling-action@v1.3.0
+        with:
+          type: 'architecture' # will create threat model
+          input_files: '["ARCHITECTURE.md"]'
+          output_file: 'ARCHITECTURE_REVIEW.md'
+          review: true
+          temperature: 0.2
+          verbose: true
+          model: 'gpt-4'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Project architecture review'
+          add: 'ARCHITECTURE_REVIEW.md'
+          pull: '--rebase --autostash'
