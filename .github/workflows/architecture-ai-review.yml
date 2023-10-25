@@ -23,7 +23,7 @@ jobs:
         uses: xvnpw/ai-threat-modeling-action@v1.3.0
         with:
           type: 'architecture' # will create threat model
-          input_files: '["ARCHITECTURE.md"]'
+          input_files: 'ARCHITECTURE.md'
           output_file: 'ARCHITECTURE_REVIEW.md'
           review: true
           temperature: 0.2
