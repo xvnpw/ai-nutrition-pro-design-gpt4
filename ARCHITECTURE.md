@@ -1,30 +1,6 @@
 # Architecture
 
-This document outlines the architecture of the AI Nutrition-Pro application, including system context, containers, and deployment views. The architecture is depicted using C4 diagrams for enhanced clarity..
-
-## System Context diagram
-
-```mermaid
-C4Context
-  title System Context diagram for AI Nutrition-Pro
-  Enterprise_Boundary(b0, "AI Nutrition-Pro boundary") {
-    System(anps1, "AI Nutrition-Pro API Service")
-  }
-  Enterprise_Boundary(b1, "OpenAI") {
-    System_Ext(ChatGPT, "ChatGPT", "LLM")
-  }
-  Enterprise_Boundary(b2, "Meal Planner A") {
-    Person_Ext(n1, "Dietitian A")
-    System_Ext(apa, "Meal Planner A System")
-  }
-  Rel(anps1, ChatGPT, "Uses for LLM featured content creation", "REST")
-  Rel(n1, apa, "Uses for diet creation")
-  Rel(apa, anps1, "Uses for AI content generation", "REST")
-```
-
-- AI Nutrition-Pro is API backend application that uses OpenAI ChatGPT as LLM solution. It connects to OpenAI server using REST.
-- Meal Planner A is one of many Meal Planner applications that can be integrated with AI Nutrition-Pro. It connects to AI Nutrition-Pro using REST.
-- Dietitian A uses Meal Planner A for making diets. For example, dietitian can generate new diet introductions based on existing ones. LLMs can create this content following personal style of dietitian.
+This document outlines the architecture of the AI Nutrition-Pro application, including system context, containers, and deployment views. The architecture is depicted using C4 diagrams for enhanced clarity.
 
 ## Containers Context diagram
 
@@ -82,32 +58,8 @@ C4Container
 | App Onboarding Manager | Internal Person | Employee that is onboarding new Meal Planner applications to AI Nutrition-Pro application. | - manage configuration of integrated Meal Planner application |
 | Meal Planner application manager | Internal Person | Employee of Meal Planner | Manages AI Nutrition-Pro integration, e.g. configuration, api keys, billings. |
 
-## Deployment diagram
+### Security
 
-For deployment, we will use Amazon AWS Cloud.
-
-```mermaid
-C4Deployment
-  title AI Nutrition-Pro deployment to AWS Cloud diagram
-  Deployment_Node(aws, "AWS account") {
-    Deployment_Node(vpc, "VPC", "App VPC") {
-      Deployment_Node(ecs, "AWS ECS", "App ECS") {
-        Container(api_gateway, "API Gateway", "Kong")
-        Container(api_app, "API Application", "Golang")
-        Container(web_control_plane, "Web Control Plane", "Golang")
-      }
-    }
-    ContainerDb(api_db, "API Database", "AWS RDS")
-    ContainerDb(control_plane_db, "Control Plane Database", "AWS RDS")
-  }
-
-  Rel(api_gateway, api_app, "REST/HTTPS")
-  Rel(api_app, api_db, "Native/TLS")
-  Rel(web_control_plane, control_plane_db, "Native/TLS")
-```
-
-- API Gateway - deployed into AWS ECS service and into App VPC. It's Kong. Accessing API Application using REST/HTTPS protocol.
-- API Application - deployed as Docker container into AWS ECS service and into App VPC. It's application created in Golang. Accessing API Database using Native/TLS protocol.
-- Web Control Plane - deployed as Docker container into AWS ECS service and into App VPC. It's application created in Golang. Accessing Control Plane Database using Native/TLS protocol.
-- API Database - instance of AWS RDS.
-- Control Plane Database - instance of AWS RDS.
+1. Authentication with Meal Panner applications - each has individual API key.
+2. Authorization of Meal Panner applications - API Gateway has ACL rules that allow or deny certain actions.
+3. Encrypted network traffic - network traffic between Meal Planner applications and API Gateway is encrypted using TLS.
