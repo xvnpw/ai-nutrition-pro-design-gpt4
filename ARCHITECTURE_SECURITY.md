@@ -59,7 +59,7 @@
 | 6 | Backend API | Elevation of Privilege through exploitation of Backend API | Elevation of Privilege | An attacker could exploit vulnerabilities in the Backend API to gain elevated privileges and access restricted data or functionality. | The architecture does not explicitly mention mitigation for elevation of privilege threats in the context of Backend API. | Regularly update and patch the Backend API, conduct security audits, and implement least privilege access controls. | Critical |
 
 
-### Data flow 6: Backend API -> API Database
+### Data flow 5: Web Control Plane -> Control Plane Database
 
 | Threat Id | Component name | Threat Name | STRIDE category | Explanation | How threat is already mitigated in architecture | Mitigations | Risk severity |
 | --- | --- | --- | --- | --- | --- | --- | --- |
