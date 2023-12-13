@@ -15,22 +15,15 @@ C4Container
         Container(backend_api, "API Application", "Golang, AWS Elastic Container Service", "Provides AI Nutrition-Pro functionality via API")
         ContainerDb(api_db, "API database", "Amazon RDS", "Stores dietitian' content samples, request and responses to LLM.")
         Person(admin, "Administrator", "Administrator of AI Nutrition-Pro application")
-        Person(onboard_manager, "App Onboarding Manager", "Employee that is onboarding new Meal Planner applications to AI Nutrition-Pro application")
     }
 
-    Person(ce1, "Meal Planner application manager", "Meal Planner employee designated to manage AI Nutrition-Pro integration")
-
     System_Ext(mealApp, "Meal Planner", "Application to create diets by dietitians")
-    Person_Ext(n1, "Dietitian")
 
     System_Ext(chatgpt, "ChatGPT-3.5", "LLM")
 
-    Rel(n1, mealApp, "Uses for diet creation")
     Rel(mealApp, api_gateway, "Uses for AI content generation", "HTTPS/REST")
     Rel(api_gateway, backend_api, "Uses for AI content generation", "HTTPS/REST")
-    Rel(ce1, app_control_plane, "Manage billings, onboard new dietitians")
     Rel(admin, app_control_plane, "Configure system properties")
-    Rel(onboard_manager, app_control_plane, "Creates new tenant. Onboarding new meal planner applications")
     Rel(backend_api, chatgpt, "Utilizes ChatGPT for LLM-featured content creation", "HTTPS/REST")
 
     Rel(app_control_plane, control_plan_db, "read/write data", "TLS")
@@ -42,7 +35,6 @@ C4Container
 | Name | Type | Description | Responsibilities |
 | --- | --- | --- | --- |
 | Meal Planner application | External system, web application | One of many Meal Planner applications that can be integrated with AI Nutrition-Pro. It connects to AI Nutrition-Pro using REST and HTTPS. | - uploads samples of dietitians' content to AI Nutrition-Pro <br/> - fetches AI generated results, e.g. diet introduction, from AI Nutrition-Pro | 
-| Dietitian | External person | It's a customer of Meal Planner application. It's using Meal Planner to create diets for patients. It will see AI generated content directly in Meal Planner. | - creates diets <br> - consents to AI processing of data |
 |  ChatGPT-3.5 | External system, API | It's OpenAI product, an LLM solution | It will be used to generate content based on provided samples. |
  
 ### AI Nutrition-Pro container context systems and persons
@@ -55,8 +47,6 @@ C4Container
 | API Application | Internal system, API application | It's written using Golang and deployed as Docker container into AWS Elastic Container Service | Provides AI Nutrition-Pro functionality via API. |
 | API database | Internal database, Amazon RDS instance | Stored data: samples of dietitians' content, requests, and responses to LLM. | Storing data for API Application |
 | Administrator | Internal Person | Administrator of AI Nutrition-Pro application. | - manage server configuration <br> - resolve problems <br> |
-| App Onboarding Manager | Internal Person | Employee that is onboarding new Meal Planner applications to AI Nutrition-Pro application. | - manage configuration of integrated Meal Planner application |
-| Meal Planner application manager | Internal Person | Employee of Meal Planner | Manages AI Nutrition-Pro integration, e.g. configuration, api keys, billings. |
 
 ### Security
 
