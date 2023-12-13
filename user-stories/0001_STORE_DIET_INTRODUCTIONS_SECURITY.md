@@ -1,19 +1,16 @@
 # (AI Generated) Security Related Acceptance Criteria
 **API Gateway**
-- **AC1:** The API Gateway must authenticate requests from the Meal Planner application using strong authentication mechanisms.
-- **AC2:** The API Gateway must encrypt data transmitted to the API Application.
-- **AC3:** The API Gateway must implement rate limiting controls to prevent DoS attacks.
+- **AC1:** The API Gateway must authenticate requests to the new API endpoint using existing API keys.
+- **AC2:** The API Gateway must apply rate limiting to the new API endpoint to mitigate DoS attacks.
+- **AC3:** The API Gateway must log all requests and responses to the new API endpoint for auditing purposes.
 
 **API Application**
-- **AC4:** The API Application must validate input data from the API Gateway to prevent injection attacks.
-- **AC5:** The API Application must encrypt data transmitted to the API database.
-- **AC6:** The API Application must implement strong access controls and authentication mechanisms.
+- **AC4:** The API Application must perform input validation for all fields in the request payload to prevent injection attacks.
+- **AC5:** The API Application must enforce authorization checks before processing requests to the new API endpoint.
+- **AC6:** The API Application must use secure communication (TLS) for all data exchanges with the API Database.
 
-**API database**
-- **AC7:** The API database must only accept encrypted data from the API Application.
-- **AC8:** The API database must implement strong access controls to prevent unauthorized access.
-
-**Meal Planner**
-- **AC9:** The Meal Planner application must send requests to the API Gateway using strong authentication mechanisms.
-- **AC10:** The Meal Planner application must encrypt data transmitted to the API Gateway.
+**API Database**
+- **AC7:** The API Database must enforce strict access controls to prevent unauthorized access.
+- **AC8:** The API Database must use TLS for all connections to ensure data is encrypted in transit.
+- **AC9:** The API Database must have monitoring in place to detect and alert on suspicious activities.
 

@@ -1,17 +1,5 @@
 # (AI Generated) Architecture Threat Model
 
-### Data flow 1: Dietitian -> Meal Planner application
-
-| Threat Id | Component name | Threat Name | STRIDE category | Explanation | How threat is already mitigated in architecture | Mitigations | Risk severity |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Meal Planner application | Dietitian's credentials are stolen leading to unauthorized access | Spoofing | The threat is applicable as the Dietitian interacts directly with the Meal Planner application, which could be a target for attackers to gain unauthorized access. | The threat is not mitigated in the current architecture. | Implement multi-factor authentication for Dietitians and educate them on secure password practices. | High |
-| 2 | Meal Planner application | Sensitive data tampering by intercepting Dietitian's data submission | Tampering | The threat is applicable as data tampering can occur if an attacker intercepts the communication between the Dietitian and the Meal Planner application. | The threat is not mitigated in the current architecture. | Ensure end-to-end encryption for data in transit and implement integrity checks on received data. | Medium |
-| 3 | Meal Planner application | Repudiation threat where Dietitian denies submitting particular data | Repudiation | The threat is applicable as there might not be sufficient logging to prove data submission by a Dietitian. | The threat is not mitigated in the current architecture. | Implement secure and tamper-evident logging mechanisms to record all user actions. | Medium |
-| 4 | Meal Planner application | Unauthorized disclosure of Dietitian's sensitive data | Information Disclosure | The threat is applicable as sensitive data could be exposed if the Meal Planner application's security controls are bypassed. | The threat is not mitigated in the current architecture. | Apply strict access controls and encrypt sensitive data at rest and in transit. | High |
-| 5 | Meal Planner application | Denial of Service attack preventing Dietitian from accessing the Meal Planner application | Denial of Service | The threat is applicable as the Meal Planner application could be targeted by DoS attacks, affecting its availability. | The threat is not mitigated in the current architecture. | Implement rate limiting, load balancing, and DDoS protection mechanisms. | Medium |
-| 6 | Meal Planner application | Elevation of privilege by exploiting vulnerabilities in the Meal Planner application | Elevation of Privilege | The threat is applicable as vulnerabilities in the application could be exploited to gain higher privileges than intended. | The threat is not mitigated in the current architecture. | Regularly update and patch the application, conduct security audits, and enforce the principle of least privilege. | High |
-
-
 ### Data flow 2: Meal Planner application -> API Gateway
 
 | Threat Id | Component name | Threat Name | STRIDE category | Explanation | How threat is already mitigated in architecture | Mitigations | Risk severity |
@@ -73,18 +61,6 @@
 | 6 | API Database | Data tampering in the API Database | Tampering | Data integrity could be compromised if tampering occurs. | not implemented | Use checksums, digital signatures, and ensure data integrity checks within the database. | Medium |
 
 
-### Data flow 7: Meal Planner application manager -> App Control Plane
-
-| Threat Id | Component name | Threat Name | STRIDE category | Explanation | How threat is already mitigated in architecture | Mitigations | Risk severity |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Web Control Plane | Meal Planner application manager's credentials are stolen leading to unauthorized access | Spoofing | Credentials can be stolen through phishing, malware, or other means. | not implemented | Implement multi-factor authentication and educate users on secure password practices and phishing awareness. | High |
-| 2 | Web Control Plane | Sensitive data exposure due to insecure transmission | Information Disclosure | Sensitive data could be exposed if transmitted over insecure channels. | Traffic is encrypted using TLS as stated in the architecture description. | Ensure that TLS configurations are up to date and follow best security practices. | Medium |
-| 3 | Web Control Plane | Web Control Plane susceptible to Cross-Site Scripting (XSS) attacks | Tampering | XSS attacks could occur if user input is not properly sanitized. | not implemented | Implement input validation, output encoding, and use content security policy headers. | Medium |
-| 4 | Web Control Plane | Denial of Service (DoS) attack on Web Control Plane | Denial of Service | An attacker could overwhelm the Web Control Plane with traffic, causing a denial of service. | not implemented | Implement rate limiting, load balancing, and ensure proper resource allocation. | Medium |
-| 5 | Web Control Plane | Unauthorized actions due to lack of activity monitoring and logging | Repudiation | Without proper logging, it may be difficult to prove the occurrence of unauthorized actions. | not implemented | Implement comprehensive logging and auditing mechanisms. | Low |
-| 6 | Web Control Plane | Elevation of privilege through exploitation of role configuration | Elevation of Privilege | An attacker could exploit vulnerabilities to gain higher privileges than intended. | not implemented | Regularly review and update role-based access controls, and enforce the principle of least privilege. | High |
-
-
 ### Data flow 8: Administrator -> App Control Plane
 
 | Threat Id | Component name | Threat Name | STRIDE category | Explanation | How threat is already mitigated in architecture | Mitigations | Risk severity |
@@ -94,17 +70,3 @@
 | 3 | Web Control Plane | Sensitive data viewed by Administrator could be inadvertently disclosed | Information Disclosure | The architecture does not specify controls for preventing information disclosure via the Administrator interface. | not implemented | Implement role-based access control and ensure sensitive data is only accessible to authorized roles. | Medium |
 | 4 | Web Control Plane | Denial of Service attack could make the control plane unavailable to Administrators | Denial of Service | The architecture does not specify resilience measures for the Web Control Plane against DoS attacks. | not implemented | Implement rate limiting, monitoring, and alerting to detect and mitigate DoS attacks. | Medium |
 | 5 | Web Control Plane | Elevation of privilege could occur if Administrator role is not properly segregated | Elevation of Privilege | The architecture does not detail role segregation or least privilege enforcement for Administrators. | not implemented | Enforce the principle of least privilege and conduct regular access reviews for Administrator roles. | High |
-
-
-### Data flow 9: App Onboarding Manager -> App Control Plane
-
-| Threat Id | Component name | Threat Name | STRIDE category | Explanation | How threat is already mitigated in architecture | Mitigations | Risk severity |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | App Control Plane | Spoofing identity of App Onboarding Manager | Spoofing | If authentication mechanisms are weak or compromised, an attacker could spoof the identity of the App Onboarding Manager. | Authentication is required for the App Control Plane, but the strength of the mechanism is not detailed. | Implement multi-factor authentication and ensure strong password policies for the App Onboarding Manager. | High |
-| 2 | App Control Plane | Tampering with data sent from App Onboarding Manager to App Control Plane | Tampering | Data in transit could be intercepted and modified. | Encrypted network traffic using TLS is mentioned, which mitigates the risk of tampering in transit. | Ensure end-to-end encryption and integrity checks for data in transit. | Medium |
-| 3 | App Control Plane | Repudiation of actions performed by App Onboarding Manager | Repudiation | Without proper logging, an App Onboarding Manager could deny actions they performed. | The architecture does not detail logging mechanisms for the App Control Plane. | Implement comprehensive logging and auditing of all actions taken by the App Onboarding Manager. | Medium |
-| 4 | App Control Plane | Information disclosure of sensitive data to unauthorized parties | Information Disclosure | Sensitive data could be exposed if there are flaws in access controls or data is not properly encrypted at rest. | The architecture mentions encrypted network traffic but does not detail encryption at rest or access control mechanisms for the App Control Plane. | Encrypt sensitive data at rest and implement strict access control policies. | High |
-| 5 | App Control Plane | Denial of Service (DoS) against the App Control Plane | Denial of Service | An attacker could overwhelm the App Control Plane with a flood of requests, leading to a DoS. | Rate limiting is implemented at the API Gateway, but it is not clear if similar protections are in place for the App Control Plane. | Implement rate limiting, load balancing, and ensure the scalability of the App Control Plane to handle high traffic. | Medium |
-| 6 | App Control Plane | Elevation of Privilege by exploiting vulnerabilities in the App Control Plane | Elevation of Privilege | An attacker could exploit vulnerabilities to gain higher privileges than intended. | The architecture does not provide details on role-based access control or other privilege management systems for the App Control Plane. | Regularly update and patch the App Control Plane, enforce the principle of least privilege, and use role-based access control. | High |
-
-
