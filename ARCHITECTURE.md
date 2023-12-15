@@ -50,6 +50,6 @@ C4Container
 
 ### Security
 
-1. Authentication with Meal Panner applications - each has individual API key.
-2. Authorization of Meal Panner applications - API Gateway has ACL rules that allow or deny certain actions.
+1. Authentication with Meal Planner applications - each has individual API key.
+2. Authorization of Meal Planner applications - API Gateway has ACL rules that allow or deny certain actions.
 3. Encrypted network traffic - network traffic between Meal Planner applications and API Gateway is encrypted using TLS.
